@@ -42,7 +42,7 @@ def driver_firefox():
     if Config.DEBUG:
         geckodriver_path = "/snap/bin/firefox.geckodriver"
     else:
-        geckodriver_path = os.path.join(os.path.dirname(__file__), 'bin', 'geckodriver')
+        geckodriver_path = os.path.join('bin', 'geckodriver')
 
     # Set up the Firefox driver with the geckodriver path
     service = Service(geckodriver_path)
