@@ -10,6 +10,7 @@ import os
 import argparse
 
 import constants
+from config import Config
 
 
 def arguments():
@@ -38,8 +39,10 @@ def driver_firefox():
     firefox_options = FirefoxOptions()
     firefox_options.headless = True
     # Set the path to the geckodriver executable
-    # geckodriver_path = os.path.join(os.path.dirname(__file__), 'bin', 'geckodriver')
-    geckodriver_path = "/snap/bin/firefox.geckodriver"
+    if Config.DEBUG:
+        geckodriver_path = "/snap/bin/firefox.geckodriver"
+    else:
+        geckodriver_path = os.path.join(os.path.dirname(__file__), 'bin', 'geckodriver')
 
     # Set up the Firefox driver with the geckodriver path
     service = Service(geckodriver_path)
