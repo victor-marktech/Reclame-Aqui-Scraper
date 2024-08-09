@@ -1,8 +1,9 @@
 from selenium import webdriver
+from selenium.webdriver.firefox.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 import csv
 import os
@@ -26,7 +27,7 @@ def arguments():
 
 
 def driver_chrome():
-    chrome_options = Options()
+    chrome_options = ChromeOptions()
     chrome_options.headless = True
     driver = webdriver.Chrome(options=chrome_options, executable_path=ChromeDriverManager(
     ).install(), service_log_path=None)
@@ -34,10 +35,16 @@ def driver_chrome():
 
 
 def driver_firefox():
-    firefox_options = Options()
+    firefox_options = FirefoxOptions()
     firefox_options.headless = True
-    driver = webdriver.Firefox(options=firefox_options, executable_path=GeckoDriverManager(
-    ).install(), service_log_path=None)
+    # Set the path to the geckodriver executable
+    # geckodriver_path = os.path.join(os.path.dirname(__file__), 'bin', 'geckodriver')
+    geckodriver_path = "/snap/bin/firefox.geckodriver"
+
+    # Set up the Firefox driver with the geckodriver path
+    service = Service(geckodriver_path)
+
+    driver = webdriver.Firefox(options=firefox_options, service=service)
     return driver
 
 
