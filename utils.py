@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from selenium.webdriver.firefox.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
@@ -21,7 +22,8 @@ def arguments():
                         action='store', dest='pages', required=True, type=int)
     parser.add_argument('-f', '--file', help='Nome do arquivo em que será salvo os dados da coleta',
                         action='store', dest='file', required=True)
-    parser.add_argument('-b', '--browser', help='Browser que será utilizado para a coleta, (F) para Firefox e (C) para Chrome',
+    parser.add_argument('-b', '--browser',
+                        help='Browser que será utilizado para a coleta, (F) para Firefox e (C) para Chrome',
                         action='store', dest='browser', nargs='?', default="f")
     args = parser.parse_args()
     return args
@@ -38,16 +40,16 @@ def driver_chrome():
 def driver_firefox():
     firefox_options = FirefoxOptions()
     firefox_options.headless = True
-    # Set the path to the geckodriver executable
     if Config.DEBUG:
-        geckodriver_path = "/snap/bin/firefox.geckodriver"
+        # geckodriver_path = os.path.join('bin', 'geckodriver')
+        geckodriver_path = os.path.join('/snap/bin/firefox.geckodriver')
     else:
-        geckodriver_path = os.path.join('bin', 'geckodriver')
+        geckodriver_path = os.environ.get('GECKODRIVER_PATH')
+        firefox_options.binary_location = os.environ.get('FIREFOX_BIN')
 
-    # Set up the Firefox driver with the geckodriver path
     service = Service(geckodriver_path)
-
     driver = webdriver.Firefox(options=firefox_options, service=service)
+
     return driver
 
 
