@@ -42,10 +42,10 @@ def driver_firefox():
     firefox_options.headless = True
     if Config.DEBUG:
         # geckodriver_path = os.path.join('bin', 'geckodriver')
-        geckodriver_path = os.path.join('/snap/bin/firefox.geckodriver')
+        geckodriver_path = '/snap/bin/firefox.geckodriver'
     else:
         geckodriver_path = os.environ.get('GECKODRIVER_PATH')
-        firefox_options.binary_location = os.environ.get('FIREFOX_BIN')
+        # firefox_options.binary_location = os.environ.get('FIREFOX_BIN')
 
     service = Service(geckodriver_path)
     driver = webdriver.Firefox(options=firefox_options, service=service)
